@@ -6,6 +6,7 @@
  */
 
 let get = {
+    coords: null,
     currentWeather: () => {
         fetch("https://api.openweathermap.org/data/2.5/weather?q=Lachine&APPID=f20349ac0af5ebfbc2586d5a8ae52834")
             .then(
@@ -24,5 +25,16 @@ let get = {
             .catch((err) => {
                 console.log("Fetch Error: " + err);
             });
+    },
+    location: () => {
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((pos) => {
+                get.coords = "lat=" + pos.coords.latitude + "&lon" + pos.coords.longitude;
+            });
+        }
+        else {
+            console.log("Geolocation is not supported by this browser");
+            return;
+        }
     }
 }
