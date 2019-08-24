@@ -1,5 +1,2 @@
-# My Test Git
-This is me testing git commits
-
-## This is my work!!!
-Refer a flood FTMS
+# A Javascirpt Weather App
+This app uses OpenWeatherAPI to fetch weather information and Bootstrap for the layout.
