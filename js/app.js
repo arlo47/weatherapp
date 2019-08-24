@@ -7,8 +7,10 @@
 
 let get = {
     coords: null,
+    cityName: document.getElementById("city-name-input"),
     currentWeather: () => {
-        fetch("https://api.openweathermap.org/data/2.5/weather?q=Lachine&APPID=f20349ac0af5ebfbc2586d5a8ae52834")
+        let locationURL = get.coords ? get.coords : "q=" + get.cityName.value;
+        fetch("https://api.openweathermap.org/data/2.5/weather?" + locationURL + "&APPID=f20349ac0af5ebfbc2586d5a8ae52834")
             .then(
                 (res) => {
                     if(res.status == 200) {
@@ -29,11 +31,11 @@ let get = {
     location: () => {
         if(navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((pos) => {
-                get.coords = "lat=" + pos.coords.latitude + "&lon" + pos.coords.longitude;
+                get.coords = "lat=" + pos.coords.latitude + "&lon=" + pos.coords.longitude;
             });
         }
         else {
-            console.log("Geolocation is not supported by this browser");
+            console.log("Geolocation is not supported by your browser. Please enter your city name manually.");
             return;
         }
     }
