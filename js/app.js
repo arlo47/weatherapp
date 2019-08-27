@@ -13,11 +13,11 @@
 
 let weatherData = null;
 
-let get = {
+let apiHandler = {
     coords: null,
     cityName: document.getElementById("city-name-input"),
     currentWeather: () => {
-        let locationURL = get.coords ? get.coords : "q=" + get.cityName.value;
+        let locationURL = apiHandler.coords ? apiHandler.coords : "q=" + apiHandler.cityName.value;
         fetch("https://api.openweathermap.org/data/2.5/weather?" + locationURL + "&APPID=f20349ac0af5ebfbc2586d5a8ae52834")
             .then(
                 (res) => {
@@ -36,11 +36,11 @@ let get = {
                 console.log("Fetch Error: " + err);
             });
     },
-    location: () => {
+    getLocation: () => {
         if(navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((pos) => {
-                get.coords = "lat=" + pos.coords.latitude + "&lon=" + pos.coords.longitude;
-                get.currentWeather();
+                apiHandler.coords = "lat=" + pos.coords.latitude + "&lon=" + pos.coords.longitude;
+                apiHandler.currentWeather();
             });
         }
         else {
@@ -57,4 +57,4 @@ let view = {
     }
 }
 
-window.addEventListener("load", get.location);
+window.addEventListener("load", apiHandler.getLocation);
