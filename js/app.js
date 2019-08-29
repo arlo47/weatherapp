@@ -32,6 +32,7 @@ let apiHandler = {
             navigator.geolocation.getCurrentPosition((pos) => {
                 apiHandler.coords = "lat=" + pos.coords.latitude + "&lon=" + pos.coords.longitude;
                 apiHandler.getCurrentWeather();
+                apiHandler.getThreeHourForecast();
             });
         }
         else {
@@ -76,7 +77,7 @@ let apiHandler = {
                         console.log("status is " + res.status);
                         res.json().then((data) => {
                             threeHourForecast = data;
-                            console.log(threeHourForecast);
+                            view.displayThreeHourForecast();
                         });
                     }
                     else {
@@ -111,6 +112,19 @@ let view = {
         let currentDateOutput = document.getElementById("current-date");
 
         currentDateOutput.innerHTML = formatDate();
+    },
+    displayThreeHourForecast: () => {
+        let threeHourForecastOutputList = document.querySelectorAll("div.three-hour-forecast > div");
+        console.log(threeHourForecastOutputList);
+
+        for(let i = 0; i < threeHourForecastOutputList.length; i++) {
+            threeHourForecastOutputList[i].innerHTML =  "<div>" +
+                                                            "<span>" + threeHourForecast.list[i].dt_txt + "</span>" +
+                                                            "<span>" + threeHourForecast.list[i].main.temp + "</span>" +
+                                                        "</div>" +
+                                                        "<span>" + threeHourForecast.list[i].main.temp_max + "</span>"
+                                                        "<span>" + threeHourForecast.list[i].main.temp_min + "</span>";
+        }
     }
 }
 
