@@ -1,0 +1,9 @@
+div#current-weather-icon img.icon {
+    width: 100px;
+    height: auto;
+}
+
+div.three-hour-forecast img.icon {
+    width: 25px;
+    height: auto;
+}
