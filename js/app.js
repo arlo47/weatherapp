@@ -1,22 +1,26 @@
-/** ***API INFO***
- * API key: f20349ac0af5ebfbc2586d5a8ae52834
- * URL example: api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=f20349ac0af5ebfbc2586d5a8ae52834
- * by geolocation: api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}
- * by city name: api.openweathermap.org/data/2.5/weather?q={city name}
- */
+// API key: f20349ac0af5ebfbc2586d5a8ae52834
 
- /** ***TO DO LIST***
-  * add methods for 5 day forecast
-  * add methods for 16 day forecast
-  * figure out a way to specify weather by city name if search btn is clicked
-  */
+/** ***ICON CONVERSION LIST***
+ * PNG    DESCRIPTION         OWF
+ * ------------------------------
+ * 01n    clear sky           800   
+ * 02d    few clouds          801
+ * 03d    scattered clouds    802
+ * 04d    broken clouds       803
+ * 09d    shower rain         521
+ * 10d    rain                501
+ * 11d    thunderstorms       202
+ * 13d    snow                602
+ * 50d    mist                701
+ */
 
 let weatherData = null;
 let threeHourForecast = null;
 let dailyForecast = null;
-let date = new Date();
 
 let formatDate = () => {
+    let date = new Date();
+
     let day = date.getDay();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
@@ -40,6 +44,8 @@ let apiHandler = {
             return;
         }
     },
+    //the URL is the same for both fetch methds, they can be combined
+    //modify locationURL by geolocation or city name depending on parameters given
     getCurrentWeather: () => {
         let locationURL = apiHandler.coords ? apiHandler.coords : "q=" + apiHandler.cityName.value;
 
