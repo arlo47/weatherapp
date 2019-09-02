@@ -16,6 +16,11 @@
 
  /**
   * Add rain mm to forecast and current weather
+  * Promise reference error when trying to generate icon in forecast for loop
+  * make sure background image works in all cases
+  * put weather description in current weather
+  * format date in forecast
+  * styles for desktop
   */
 
 let weatherData = null;     //contains all weather data pulled from OpenWeather API
@@ -23,15 +28,6 @@ let forecastData = null;    //contains all forecast data pulled from OpenWeather
 let coords = null;          //contains latitude and longitude values from getLocation()
 let cityName = null;        //contains city name value when user enters city name
 let date = new Date();
-
-//returns date in dd/mm/yyyy format
-let formatDate = () => {
-    let day = date.getDay();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-
-    return day + "/" + month + "/" + year;
-}
 
 //uses the browsers geolocation method to get users coordinates
 let getLocation = () => {
@@ -64,6 +60,8 @@ let fetchFromAPI = (type) => {
                             view.displayCurrentDate();
                             view.displayCurrentDay();
                             view.displayCurrentWeather();
+                            view.displayCityName();
+                            view.setBackgroundImage();
                         }
                         else if(type == "forecast") {
                             forecastData = data;
@@ -84,11 +82,24 @@ let fetchFromAPI = (type) => {
         });
 }
 
+//returns date in dd/mm/yyyy format
+let formatDate = () => {
+    let day = date.getDay();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    return day + "/" + month + "/" + year;
+}
 
 let view = {
     degrees: "<sup>&deg;C</sup>",
-    tempHighArrow: "<i class='fas fa-long-arrow-alt-up'></i>",
-    tempLowArrow: "<i class='fas fa-long-arrow-alt-down'></i>",
+    tempHighArrow: "<sup><i class='fas fa-long-arrow-alt-up'></i></sup>",
+    tempLowArrow: "<sup><i class='fas fa-long-arrow-alt-down'></i></sup>",
+    displayCityName: () => {
+        let cityNameOutput = document.getElementById("city-name");
+
+        cityNameOutput.innerHTML = weatherData.name;
+    },
     displayCurrentWeather: () => {
         let currentTempOutput = document.getElementById("current-temp");
         let currentHighTempOutput = document.getElementById("current-high-temp");
@@ -117,19 +128,63 @@ let view = {
         let forecastDataOutputList = document.querySelectorAll("div.three-hour-forecast > div.col-12 > div.row");
 
         for(let i = 0; i < forecastDataOutputList.length; i++) {
+            let forecastDate = forecastData.list[i].dt_txt;
+            let mainTemp = forecastData.list[i].main.temp + view.degrees;
+            let maxTemp = view.tempHighArrow + forecastData.list[i].main.temp_max + view.degrees;
+            let minTemp = view.tempLowArrow + forecastData.list[i].main.temp_min + view.degrees;
+            let description = "<i class='owi owi-09d'></i>" + forecastData.list[i].weather[0].description;
+
             forecastDataOutputList[i].innerHTML =   
-            "<div class='col-12 text-center'>" + forecastData.list[i].dt_txt + "</div>" +
-            "<div class='col-12 text-center'>" + "<i class='owi owi-09d'></i>" + "</div>" +
-            "<div class='col-12 text-center forecast-description'>" + forecastData.list[i].weather[0].description + "</div>" +
-            "<div class='col-5 text-right forecast-main-temp temp'>" + forecastData.list[i].main.temp + view.degrees + "</div>" +
-            "<div class='col-4 text-left'>" +
-                "<span class='temp d-block'>" + view.tempHighArrow + forecastData.list[i].main.temp_max + view.degrees + "</span>" +
-                "<span class='temp d-block'>" + view.tempLowArrow + forecastData.list[i].main.temp_min + view.degrees +  "</span>" +
-            "</div>";
+            "<div class='forecast-date col-12 text-center'>" + forecastDate + "</div>" +
+            "<div class='col-8 text-right forecast-main-temp temp'>" + mainTemp + "</div>" +
+            "<div class='max-min-temp col-4 text-left'>" +
+                "<span class='temp d-block'>" + maxTemp + "</span>" +
+                "<span class='temp d-block'>" + minTemp +  "</span>" +
+            "</div>" +
+            "<div class='col-12 text-center forecast-description'>" + description + "</div>";
+        }
+    },
+    setBackgroundImage: () => {
+        let weather = weatherData.weather[0].main;
+        let image = document.querySelector(".bg-image");
+
+        console.log(weather);   //outputs weather description
+
+        switch(weather) {
+            case "Clouds":
+                image.id = "clouds";
+                break;
+            case "Clear":
+                image.id = "clear";
+                break;
+            case "Drizzle":
+                image.id = "drizzle";
+                break;
+            case "Mist":
+                image.id = "mist";
+                break; 
+            case "Rain":
+                image.id = "rain";
+                break;
+            case "Snow":
+                image.id = "snow";
+                break;
+            case "Thunderstorm":
+                image.id = "thunderstorm";
+                break;
+            default:
+                console.log("default switche case triggered.");
+                break;
         }
     },
     displayIcon: (iconCode) => {
         return "<i class='owi owi-" + iconCode + "'></i>"
+    },
+    //this is not working, read notes at top of page for more info
+    displayRain: (rain) => {
+        if(rain > 0) {
+            return ", " + rain + "mm";
+        }
     }
 }
 
