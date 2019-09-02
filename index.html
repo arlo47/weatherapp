@@ -9,26 +9,25 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/fontawesome-all.css">
+    <link rel="stylesheet" href="css/open-weather-icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,500i,700,700i,900,900i&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row" id="current-weather">
-            <div class="col-12" id="city-name-input-container">
-                <label for="city-name-input">Enter Your City Name: </label>
-                <input type="text" id="city-name-input">
-                <button>Submit</button>
-            </div>
-            <div class="col-6" id="current-weather-icon"></div>
-            <div class="col-6" id="current-weather-info">
-                <div class="row">
-                    <div id="city-name"></div>
-                    <div id="current-day"></div>
-                    <div id="current-date"></div>   
+            <div class="col-12 text-center" id="current-weather-icon"></div>
+            <div class="col-12" id="current-weather-info">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-8 text-left" id="city-name">Montreal</div>
+                    <div class="col-8 text-center" id="current-day"></div>
+                    <div class="col-8 text-right" id="current-date"></div>   
                 </div>
                 <div class="row">
-                    <div class="col-12" id="current-temp"></div>
-                    <div class="col-6" id="current-high-temp"></div>
-                    <div class="col-6" id="current-low-temp"></div>
+                    <div class="col-8 temp" id="current-temp"></div>
+                    <div class="col-4">
+                        <span class="temp d-block" id="current-high-temp"></span>
+                        <span class="temp d-block" id="current-low-temp"></span>
+                    </div>
                 </div>
 
             </div>
@@ -36,18 +35,18 @@
 
         <div class="row three-hour-forecast">
             <div class="col-12">
-                    <div class="row"></div>
-                    <div class="row"></div>
-                    <div class="row"></div>
-                    <div class="row"></div>
-                    <div class="row"></div>
-                    <div class="row"></div>
-                    <div class="row"></div>
-                    <div class="row"></div>
-                    <div class="row"></div>
-                    <div class="row"></div>
-                    <div class="row"></div>
-                    <div class="row"></div>
+                    <div class="row d-flex justify-content-center"></div>
+                    <div class="row d-flex justify-content-center"></div>
+                    <div class="row d-flex justify-content-center"></div>
+                    <div class="row d-flex justify-content-center"></div>
+                    <div class="row d-flex justify-content-center"></div>
+                    <div class="row d-flex justify-content-center"></div>
+                    <div class="row d-flex justify-content-center"></div>
+                    <div class="row d-flex justify-content-center"></div>
+                    <div class="row d-flex justify-content-center"></div>
+                    <div class="row d-flex justify-content-center"></div>
+                    <div class="row d-flex justify-content-center"></div>
+                    <div class="row d-flex justify-content-center"></div>
             </div>
         </div><!-- /.three-hour-forecast -->
     </div> <!-- /.container -->

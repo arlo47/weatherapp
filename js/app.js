@@ -14,6 +14,10 @@
  * 50d    mist                701
  */
 
+ /**
+  * Add rain mm to forecast and current weather
+  */
+
 let weatherData = null;     //contains all weather data pulled from OpenWeather API
 let forecastData = null;    //contains all forecast data pulled from OpenWeather API
 let coords = null;          //contains latitude and longitude values from getLocation()
@@ -52,7 +56,7 @@ let fetchFromAPI = (type) => {
         .then(
             (res) => {
                 if(res.status == 200) {
-                    console.log("Status is " + res.status);
+                    console.log("Status is " + res.status + " for " + type);
                     res.json().then((data) => {
                         //Once data is assigned to weatherData, display content to DOM
                         if(type == "weather") {
@@ -82,15 +86,18 @@ let fetchFromAPI = (type) => {
 
 
 let view = {
+    degrees: "<sup>&deg;C</sup>",
+    tempHighArrow: "<i class='fas fa-long-arrow-alt-up'></i>",
+    tempLowArrow: "<i class='fas fa-long-arrow-alt-down'></i>",
     displayCurrentWeather: () => {
         let currentTempOutput = document.getElementById("current-temp");
         let currentHighTempOutput = document.getElementById("current-high-temp");
         let currentLowTempOutput = document.getElementById("current-low-temp");
         let currentWeatherIconOutput = document.getElementById("current-weather-icon");
 
-        currentTempOutput.innerHTML = weatherData.main.temp;
-        currentHighTempOutput.innerHTML = weatherData.main.temp_max;
-        currentLowTempOutput.innerHTML = weatherData.main.temp_min;
+        currentTempOutput.innerHTML = weatherData.main.temp + view.degrees;
+        currentHighTempOutput.innerHTML = view.tempHighArrow + weatherData.main.temp_max + view.degrees;
+        currentLowTempOutput.innerHTML = view.tempLowArrow + weatherData.main.temp_min + view.degrees;
         //gets icon code from weatherData and inserts it to the src of an <img> with displayIcon()
         currentWeatherIconOutput.innerHTML = view.displayIcon(weatherData.weather[0].icon);
     },
@@ -108,26 +115,22 @@ let view = {
     },
     displayThreeHourForecast: () => {
         let forecastDataOutputList = document.querySelectorAll("div.three-hour-forecast > div.col-12 > div.row");
-        console.log(forecastDataOutputList);
 
         for(let i = 0; i < forecastDataOutputList.length; i++) {
-            forecastDataOutputList[i].innerHTML =   "<div class='col-5'>" + forecastData.list[i].dt_txt + "</div>" +
-                                                    //throwing an error
-                                                    "<div class='col-1'>" + "<img class='icon' src='img/icons/11d.svg'>" + "</div>" +
-                                                    "<div class='col-3'>" + forecastData.list[i].weather[0].description + "</div>" +
-                                                    "<div class='col-1'>" + forecastData.list[i].main.temp + "</div>" +
-                                                    "<div class='col-1'>" + forecastData.list[i].main.temp_max + "</div>" +
-                                                    "<div class='col-1'>" + forecastData.list[i].main.temp_min + "</div>";
+            forecastDataOutputList[i].innerHTML =   
+            "<div class='col-12 text-center'>" + forecastData.list[i].dt_txt + "</div>" +
+            "<div class='col-12 text-center'>" + "<i class='owi owi-09d'></i>" + "</div>" +
+            "<div class='col-12 text-center forecast-description'>" + forecastData.list[i].weather[0].description + "</div>" +
+            "<div class='col-5 text-right forecast-main-temp temp'>" + forecastData.list[i].main.temp + view.degrees + "</div>" +
+            "<div class='col-4 text-left'>" +
+                "<span class='temp d-block'>" + view.tempHighArrow + forecastData.list[i].main.temp_max + view.degrees + "</span>" +
+                "<span class='temp d-block'>" + view.tempLowArrow + forecastData.list[i].main.temp_min + view.degrees +  "</span>" +
+            "</div>";
         }
     },
     displayIcon: (iconCode) => {
-        return "<img class='icon' src='img/icons/" + iconCode + ".svg'>";
+        return "<i class='owi owi-" + iconCode + "'></i>"
     }
 }
-
-
-
-
-
 
 window.addEventListener("load", getLocation);

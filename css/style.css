@@ -1,9 +1,103 @@
-div#current-weather-icon img.icon {
-    width: 100px;
-    height: auto;
+#current-weather-icon i.owi {
+    font-size: 8em;
 }
 
-div.three-hour-forecast img.icon {
-    width: 25px;
-    height: auto;
+.three-hour-forecast i.owi {
+    font-size: 1.5em;
+}
+
+#current-weather {
+    color: #FFF;
+    background-color: #1a1a1a;
+    margin: 10px 0;
+    padding: 10px 5px;
+}
+
+#current-temp {
+    font-size: 52px;
+}
+
+#current-high-temp {
+    margin-top: 20px;
+}
+
+#current-low-temp, #current-high-temp {
+    font-size: 16px;
+}
+
+#city-name {
+    top: 15px;
+}
+
+#current-day {
+    font-size: 48px;
+}
+
+.forecast-main-temp {
+    font-size: 36px;
+}
+
+.forecast-description {
+    font-size: 24px;
+}
+
+.three-hour-forecast .row {
+    color: #FFF;
+    background-color: #1a1a1a;
+    margin: 10px 0;
+    padding: 10px 5px;
+}
+
+.temp i {
+    margin-right: 3px;
+}
+
+i.owi {
+    color: #FFF;
+}
+
+/**********************
+***** FONT STYLES *****
+***********************/
+
+p, span, a, li, div {
+    font-family: 'Roboto Light', sans-serif;
+}
+
+.bold {
+    font-family: 'Roboto Bold', sans-serif;
+}
+
+.black {
+    font-family: 'Roboto Black', sans-serif;
+}
+
+
+/**********************
+***** QUERIES *****
+***********************/
+
+/* Extra Small */
+@media only screen and (max-width: 575px) {
+
+}
+
+/* Small */
+@media only screen and (max-width: 767px) {
+
+}
+
+/* Medium */
+@media only screen and (max-width: 991px) {
+
+}
+
+/* Large */
+@media only screen and (max-width: 1199px) {
+
+}
+
+/* Extra Large */
+@media only screen and (min-width: 1200px) {
+
 }
