@@ -19,7 +19,7 @@
   * Promise reference error when trying to generate icon in forecast for loop
   * make sure background image works in all cases
   * put weather description in current weather
-  * format date in forecast
+  * change forecast date to just say day of week
   * styles for desktop
   */
 
@@ -135,13 +135,13 @@ let view = {
             let description = "<i class='owi owi-09d'></i>" + forecastData.list[i].weather[0].description;
 
             forecastDataOutputList[i].innerHTML =   
-            "<div class='forecast-date col-12 text-center'>" + forecastDate + "</div>" +
-            "<div class='col-8 text-right forecast-main-temp temp'>" + mainTemp + "</div>" +
-            "<div class='max-min-temp col-4 text-left'>" +
+            "<div class='forecast-date col-12 col-md-4 order-md-1 text-center text-md-left'>" + forecastDate + "</div>" +
+            "<div class='col-8 col-md-3 order-md-3 ml-md-auto text-right forecast-main-temp temp'>" + mainTemp + "</div>" +
+            "<div class='col-4 col-md-2 order-md-4 ml-md-auto max-min-temp text-right'>" +
                 "<span class='temp d-block'>" + maxTemp + "</span>" +
                 "<span class='temp d-block'>" + minTemp +  "</span>" +
             "</div>" +
-            "<div class='col-12 text-center forecast-description'>" + description + "</div>";
+            "<div class='col-12 col-md-3 order-md-2 text-center text-md-left forecast-description'>" + description + "</div>";
         }
     },
     setBackgroundImage: () => {

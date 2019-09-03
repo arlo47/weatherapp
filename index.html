@@ -12,12 +12,19 @@
     <link rel="stylesheet" href="css/open-weather-icons.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,500i,700,700i,900,900i&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="container-fluid bg-image">
-        <div class="row" id="top-bar">
+<body class="bg-image">
+
+    
+    <div class="container">
+
+    <div class="row" id="top-bar">
             <div class="col-12 text-center">
-                <input type="text" id="city-name-input" value="Search Location">
-                <a href="#"><i class="fas fa-search"></i></a>
+                <div class="col-6 ml-auto mr-auto input-group mb-3">
+                    <input type="text" class="form-control" placeholder="City Name" aria-label="City Name" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn" id="city-btn" type="button"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -42,18 +49,18 @@
 
         <div class="row three-hour-forecast">
             <div class="col-12">
-                    <div class="row d-flex justify-content-center"></div>
-                    <div class="row d-flex justify-content-center"></div>
-                    <div class="row d-flex justify-content-center"></div>
-                    <div class="row d-flex justify-content-center"></div>
-                    <div class="row d-flex justify-content-center"></div>
-                    <div class="row d-flex justify-content-center"></div>
-                    <div class="row d-flex justify-content-center"></div>
-                    <div class="row d-flex justify-content-center"></div>
-                    <div class="row d-flex justify-content-center"></div>
-                    <div class="row d-flex justify-content-center"></div>
-                    <div class="row d-flex justify-content-center"></div>
-                    <div class="row d-flex justify-content-center"></div>
+                <div class="row d-flex justify-content-center justify-content-md-start forecast-row align-items-md-center"></div>
+                <div class="row d-flex justify-content-center justify-content-md-start forecast-row align-items-md-center"></div>
+                <div class="row d-flex justify-content-center justify-content-md-start forecast-row align-items-md-center"></div>
+                <div class="row d-flex justify-content-center justify-content-md-start forecast-row align-items-md-center"></div>
+                <div class="row d-flex justify-content-center justify-content-md-start forecast-row align-items-md-center"></div>
+                <div class="row d-flex justify-content-center justify-content-md-start forecast-row align-items-md-center"></div>
+                <div class="row d-flex justify-content-center justify-content-md-start forecast-row align-items-md-center"></div>
+                <div class="row d-flex justify-content-center justify-content-md-start forecast-row align-items-md-center"></div>
+                <div class="row d-flex justify-content-center justify-content-md-start forecast-row align-items-md-center"></div>
+                <div class="row d-flex justify-content-center justify-content-md-start forecast-row align-items-md-center"></div>
+                <div class="row d-flex justify-content-center justify-content-md-start forecast-row align-items-md-center"></div>
+                <div class="row d-flex justify-content-center justify-content-md-start forecast-row align-items-md-center"></div>
             </div>
         </div><!-- /.three-hour-forecast -->
     </div> <!-- /.container -->
