@@ -13,7 +13,6 @@ body {
 
 #top-bar #input-container {
     display: flex;
-    justify-content: flex-end;
 }
 
 #top-bar input {
@@ -33,10 +32,6 @@ body {
 
 
 /* CURRENT WEATHER STYLES */
-#current-weather-icon i.owi {
-    font-size: 8em;
-}
-
 #current-weather {
     color: #FFF;
     background-color: #1a1a1a;
@@ -44,22 +39,30 @@ body {
     padding: 10px 5px;
     opacity: 0.75;
     display: flex;
+    height: 210px;
 }
 
 #current-weather-icon {
     text-align: center;
     flex: 1;
+    display: flex;
 }
 
-#info-container {
+#weather-info-container {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-around;
 }
 
 #current-weather-info {
     display: flex;
+}
+
+#current-weather-icon i.owi {
+    font-size: 8em;
+    margin: auto;
 }
 
 #current-temp {
@@ -87,48 +90,19 @@ body {
 }
 
 #current-day {
-    font-size: 48px;
+    font-size: 60px;
 }
 
-
 /* FORECAST STYLES */
+
 .three-hour-forecast .row {
     color: #FFF;
     background-color: #1a1a1a;
     margin: 10px 0;
     padding: 20px;
     opacity: 0.75;
-    display: flex;
-    justify-content: space-between;
 }
 
-.forecast-date {
-    flex: 2;
-}
-
-.forecast-description {
-    flex: 2; 
-}
-
-.forecast-main-temp {
-    justify-content: flex-end;
-    flex: 1;
-}
-
-.forecast-max-temp {
-    justify-content: flex-end;
-    flex: 1;
-}
-
-.forecast-min-temp {
-    justify-content: flex-end;
-    flex: 1;
-}
-
-.three-hour-forecast i.owi {
-    font-size: 0.8em;
-    margin-right: 0.2em;
-}
 
 
 /* BACKGROUND IMAGES */
@@ -190,13 +164,155 @@ p, span, a, li, div, i {
 /*** QUERIES ***/
 /* Each media query mirrors the bootstrap breakpoints */
 
+/* Smallest */
+@media only screen and (max-width: 330px) {
+    #current-temp {
+        font-size: 48px !important;
+    }
+}
+
+
 /* Extra Small */
 @media only screen and (max-width: 575px) {
+
+    #current-weather {
+        flex-direction: column;
+        height: 320px;
+        justify-content: space-around;
+    }
+
+    #current-weather-icon {
+        order: 1;
+        flex: 0;
+    }
+
+    #weather-info-container {
+        order: 2;
+    }
+
+    #city-info {
+        order: 2;
+    }
+
+    #current-weather-info {
+        order: 1;
+    }
+
+    #current-day {
+        font-size: 30px;
+    }
+
+    #city-name, #current-date {
+        font-size: 16px;
+    }
+
+    #current-temp {
+        font-size: 64px;
+    }
+
+    .three-hour-forecast .row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .forecast-main-temp {
+        font-size: 30px;
+    }
+
+    .forecast-date {
+        margin-bottom: 10px;
+    }
+
+    .forecast-description {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+        font-size: 24px;
+    }
+
+    .forecast-description i.owi {
+        margin-right: 4px;
+    }
+
+    .temp-container {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .max-min-container {
+        display: flex;
+        flex-direction: column;
+        margin-left: 10px;
+    }
+
+    .three-hour-forecast .forecast-info-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #top-bar #input-container {
+        justify-content: center;
+    }
 
 }
 
 /* Small */
 @media only screen and (min-width: 576px) {
+
+    .forecast-main-temp {
+        align-self: center;
+    }
+
+    .three-hour-forecast .row {
+        display: flex;
+    }
+    
+    .forecast-info-container {
+        display: flex;
+        flex-direction: column;
+        flex: 2;
+    }
+    
+    .forecast-date {
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+    
+    .forecast-description {
+        display: flex;
+        font-size: 21px;
+    }
+    
+    .forecast-description span {
+        margin-left: 10px;
+        align-self: center;
+    }
+    
+    
+    .forecast-description i.owi {
+        font-size: 30px;
+    }
+    
+    .temp-container {
+        display: flex;
+        flex-direction: row;
+        font-size: 36px;
+    }
+    
+    .max-min-container {
+        display: flex;
+        flex-direction: column;
+        font-size: 21px;
+        margin: auto 10px;
+    }
+
+    #top-bar #input-container {
+        justify-content: center;
+    }
 
 }
 
@@ -213,8 +329,107 @@ p, span, a, li, div, i {
         margin: 0 auto;
     }
 
+    /* CURRENT WEATHER STYLES */
+    #current-weather {
+        display: flex;
+    }
+
+    #current-weather-icon {
+        flex: 1;
+    }
+
+    #weather-info-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #current-weather-info {
+        display: flex;
+    }
+
+    #current-temp {
+        flex: 1;
+    }
+
+    #high-low-temp {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #city-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #current-date {
+        align-self: flex-end;
+    }
 
 
+    /* FORECAST STYLES */
+    .forecast-info-container {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .three-hour-forecast .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .forecast-date {
+        flex: 2;
+    }
+
+    .forecast-description {
+        flex: 2; 
+    }
+
+    .forecast-main-temp {
+        justify-content: flex-end;
+        flex: 1;
+        align-self: center;
+    }
+
+    .three-hour-forecast .temp-container {
+        font-size: 21px;
+    }
+
+    .max-min-container {
+        flex-direction: row;
+    }
+
+    .forecast-max-temp {
+        justify-content: flex-end;
+        flex: 1;
+        margin-right: 5px;
+    }
+
+    .forecast-min-temp {
+        justify-content: flex-end;
+        flex: 1;
+    }
+
+    .three-hour-forecast i.owi {
+        font-size: 36px;
+        margin-right: 5px;
+    }
+
+    .forecast-date {
+        font-size: 18px;
+    }
+    
+    .forecast-description {
+        font-size: 18px;
+    }
+
+    #top-bar #input-container {
+        justify-content: flex-end;
+    }
+    
 }
 
 /* Large */

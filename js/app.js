@@ -133,14 +133,20 @@ let view = {
             let mainTemp = forecastData.list[i].main.temp + view.degrees;
             let maxTemp = view.tempHighArrow + forecastData.list[i].main.temp_max + view.degrees;
             let minTemp = view.tempLowArrow + forecastData.list[i].main.temp_min + view.degrees;
-            let description = "<i class='owi owi-09d'></i>" + forecastData.list[i].weather[0].description;
+            let description = "<i class='owi owi-09d'></i>" + "<span>" + forecastData.list[i].weather[0].description + "</span>";
 
             forecastDataOutputList[i].innerHTML =   
-            "<div class='forecast-date'>" + forecastDate + "</div>" +
-            "<div class='forecast-description'>" + description + "</div>" +
-            "<div class='forecast-main-temp'>" + mainTemp + "</div>" +
-            "<div class='forecast-max-temp'>" + maxTemp +  "</div>" +
-            "<div class='forecast-min-temp'>" + minTemp +  "</div>";
+            "<div class='forecast-info-container'>" +
+                "<div class='forecast-date'>" + forecastDate + "</div>" +
+                "<div class='forecast-description'>" + description + "</div>" +
+            "</div>" +
+            "<div class='temp-container'>" +
+                "<div class='forecast-main-temp'>" + mainTemp + "</div>" +
+                "<div class='max-min-container'>" +
+                    "<div class='forecast-max-temp'>" + maxTemp +  "</div>" +
+                    "<div class='forecast-min-temp'>" + minTemp +  "</div>" +
+                "</div>" +
+            "</div>";
         }
     },
     setBackgroundImage: () => {
