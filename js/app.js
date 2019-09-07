@@ -21,6 +21,7 @@
   * put weather description in current weather
   * change forecast date to just say day of week
   * styles for desktop
+  * add more background images, add night versions
   */
 
 let weatherData = null;     //contains all weather data pulled from OpenWeather API
@@ -93,8 +94,8 @@ let formatDate = () => {
 
 let view = {
     degrees: "<sup>&deg;C</sup>",
-    tempHighArrow: "<sup><i class='fas fa-long-arrow-alt-up'></i></sup>",
-    tempLowArrow: "<sup><i class='fas fa-long-arrow-alt-down'></i></sup>",
+    tempHighArrow: "<i class='fas fa-long-arrow-alt-up'></i>",
+    tempLowArrow: "<i class='fas fa-long-arrow-alt-down'></i>",
     displayCityName: () => {
         let cityNameOutput = document.getElementById("city-name");
 
@@ -125,7 +126,7 @@ let view = {
         currentDateOutput.innerHTML = formatDate();
     },
     displayThreeHourForecast: () => {
-        let forecastDataOutputList = document.querySelectorAll("div.three-hour-forecast > div.col-12 > div.row");
+        let forecastDataOutputList = document.querySelectorAll("div.three-hour-forecast > div.row");
 
         for(let i = 0; i < forecastDataOutputList.length; i++) {
             let forecastDate = forecastData.list[i].dt_txt;
@@ -135,13 +136,11 @@ let view = {
             let description = "<i class='owi owi-09d'></i>" + forecastData.list[i].weather[0].description;
 
             forecastDataOutputList[i].innerHTML =   
-            "<div class='forecast-date col-12 col-md-4 order-md-1 text-center text-md-left'>" + forecastDate + "</div>" +
-            "<div class='col-8 col-md-3 order-md-3 ml-md-auto text-right forecast-main-temp temp'>" + mainTemp + "</div>" +
-            "<div class='col-4 col-md-2 order-md-4 ml-md-auto max-min-temp text-right'>" +
-                "<span class='temp d-block'>" + maxTemp + "</span>" +
-                "<span class='temp d-block'>" + minTemp +  "</span>" +
-            "</div>" +
-            "<div class='col-12 col-md-3 order-md-2 text-center text-md-left forecast-description'>" + description + "</div>";
+            "<div class='forecast-date'>" + forecastDate + "</div>" +
+            "<div class='forecast-description'>" + description + "</div>" +
+            "<div class='forecast-main-temp'>" + mainTemp + "</div>" +
+            "<div class='forecast-max-temp'>" + maxTemp +  "</div>" +
+            "<div class='forecast-min-temp'>" + minTemp +  "</div>";
         }
     },
     setBackgroundImage: () => {
