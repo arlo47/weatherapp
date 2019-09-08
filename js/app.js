@@ -1,27 +1,10 @@
-// API key: f20349ac0af5ebfbc2586d5a8ae52834
-
-/** ***ICON CONVERSION LIST***
- * PNG    DESCRIPTION         OWF
- * ------------------------------
- * 01n    clear sky           800   
- * 02d    few clouds          801
- * 03d    scattered clouds    802
- * 04d    broken clouds       803
- * 09d    shower rain         521
- * 10d    rain                501
- * 11d    thunderstorms       202
- * 13d    snow                602
- * 50d    mist                701
- */
-
  /**
-  * Add rain mm to forecast and current weather
-  * Promise reference error when trying to generate icon in forecast for loop
+  * Get city name input working
   * make sure background image works in all cases
-  * put weather description in current weather
-  * change forecast date to just say day of week
-  * styles for desktop
   * add more background images, add night versions
+  * line up columns in forecast row
+  * put geolocation and fetch functions inside data object
+  * put format functions inside format object
   */
 
 let weatherData = null;     //contains all weather data pulled from OpenWeather API
@@ -83,7 +66,6 @@ let fetchFromAPI = (type) => {
         });
 }
 
-//returns date in dd/mm/yyyy format
 let formatDate = (dt_text) => {
     if(dt_text == "current") {
         let day = date.getDate();
@@ -149,8 +131,8 @@ let view = {
         currentTempOutput.innerHTML = weatherData.main.temp + view.degrees;
         currentHighTempOutput.innerHTML = view.tempHighArrow + weatherData.main.temp_max + view.degrees;
         currentLowTempOutput.innerHTML = view.tempLowArrow + weatherData.main.temp_min + view.degrees;
-        //gets icon code from weatherData and inserts it to the src of an <img> with displayIcon()
-        currentWeatherIconOutput.innerHTML = view.displayIcon(weatherData.weather[0].icon);
+        currentWeatherIconOutput.innerHTML = view.displayIcon(weatherData.weather[0].icon) + 
+                                            `<span>${ weatherData.weather[0].main }</span>`;
     },
     displayCurrentDay: () => {
         let currentDayOutput = document.getElementById("current-day");
@@ -172,7 +154,8 @@ let view = {
             let mainTemp = forecastData.list[i].main.temp + view.degrees;
             let maxTemp = view.tempHighArrow + forecastData.list[i].main.temp_max + view.degrees;
             let minTemp = view.tempLowArrow + forecastData.list[i].main.temp_min + view.degrees;
-            let description = "<i class='owi owi-09d'></i>" + "<span>" + forecastData.list[i].weather[0].description + "</span>";
+            let description = `${ view.displayIcon(forecastData.list[i].weather[0].icon) }
+                               <span> ${ forecastData.list[i].weather[0].description } </span>`;
 
             forecastDataOutputList[i].innerHTML =   
            `<div class='forecast-info-container'>
@@ -228,13 +211,7 @@ let view = {
         }
     },
     displayIcon: (iconCode) => {
-        return "<i class='owi owi-" + iconCode + "'></i>"
-    },
-    //this is not working, read notes at top of page for more info
-    displayRain: (rain) => {
-        if(rain > 0) {
-            return ", " + rain + "mm";
-        }
+        return `<i class='owi owi-${ iconCode }'></i>`;
     }
 }
 
