@@ -69,7 +69,7 @@ let fetchFromAPI = (type) => {
                             view.displayThreeHourForecast();
                         }
                         else {
-                            console.log("type was not weather or forecast");
+                            console.log("type in fetchFromAPI() was not weather or forecast");
                         }
                     });
                 }
@@ -84,12 +84,51 @@ let fetchFromAPI = (type) => {
 }
 
 //returns date in dd/mm/yyyy format
-let formatDate = () => {
-    let day = date.getDay();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
+let formatDate = (dt_text) => {
+    if(dt_text == "current") {
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+    
+        return day + "/" + month + "/" + year;
+    }
+    else if(dt_text.length == 19) {
+        let dtSubstring = dt_text.substring(0, 10);
+        let forecastDate = new Date(dtSubstring);
 
-    return day + "/" + month + "/" + year;
+        let day = forecastDate.getDate();
+        let month = forecastDate.getMonth() + 1;
+        let year = forecastDate.getFullYear();
+
+        return day + "/" + month + "/" + year;
+    }
+    else {
+        console.log("Error in formatDate()");
+    }
+
+}
+
+let formatTime = (dt_text) => {
+    let minutes = dt_text.substring(13, 16);
+    let hours = parseInt(dt_text.substring(11, 13));
+    let meridiem = "am";
+
+    if(hours == 00) {
+        hours = 12;
+    }
+    else if(hours > 12) {
+        hours = hours - 12;
+        meridiem = "pm";
+    }
+    return hours + minutes + meridiem;
+}
+
+let formatDay = (dt_text) => {
+    let dtSubstring = dt_text.substring(0, 10);
+    let forecastDate = new Date(dtSubstring);
+    let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    let dayName = days[forecastDate.getDay()];
+    return dayName;
 }
 
 let view = {
@@ -123,7 +162,7 @@ let view = {
     displayCurrentDate: () => {
         let currentDateOutput = document.getElementById("current-date");
 
-        currentDateOutput.innerHTML = formatDate();
+        currentDateOutput.innerHTML = formatDate("current");
     },
     displayThreeHourForecast: () => {
         let forecastDataOutputList = document.querySelectorAll("div.three-hour-forecast > div.row");
@@ -136,24 +175,30 @@ let view = {
             let description = "<i class='owi owi-09d'></i>" + "<span>" + forecastData.list[i].weather[0].description + "</span>";
 
             forecastDataOutputList[i].innerHTML =   
-            "<div class='forecast-info-container'>" +
-                "<div class='forecast-date'>" + forecastDate + "</div>" +
-                "<div class='forecast-description'>" + description + "</div>" +
-            "</div>" +
-            "<div class='temp-container'>" +
-                "<div class='forecast-main-temp'>" + mainTemp + "</div>" +
-                "<div class='max-min-container'>" +
-                    "<div class='forecast-max-temp'>" + maxTemp +  "</div>" +
-                    "<div class='forecast-min-temp'>" + minTemp +  "</div>" +
-                "</div>" +
-            "</div>";
+           `<div class='forecast-info-container'>
+                <div class='forecast-date'>
+                    ${ formatDay(forecastDate) }
+                    ${ formatDate(forecastDate) } 
+                    ${ formatTime(forecastDate) }
+                </div>
+                <div class='forecast-description'> ${ description } </div>
+            </div>
+            <div class='temp-container'>
+                <div class='forecast-main-temp'> ${ mainTemp } </div>
+                <div class='max-min-container'>
+                    <div class='forecast-max-temp'> ${ maxTemp } </div>
+                    <div class='forecast-min-temp'> ${ minTemp } </div>
+                </div>
+            </div>`;
         }
     },
     setBackgroundImage: () => {
         let weather = weatherData.weather[0].main;
+        let description = weatherData.weather[0].description;
         let image = document.querySelector(".bg-image");
 
-        console.log(weather);   //outputs weather description
+        console.log("main: " + weather);   //outputs weather main description
+        console.log("description: " + description);   //outputs weather description
 
         switch(weather) {
             case "Clouds":
@@ -178,7 +223,7 @@ let view = {
                 image.id = "thunderstorm";
                 break;
             default:
-                console.log("default switche case triggered.");
+                console.log("default switch case triggered.");
                 break;
         }
     },
