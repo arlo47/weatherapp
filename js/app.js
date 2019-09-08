@@ -12,15 +12,17 @@ let data = {
                 coords = "lat=" + pos.coords.latitude + "&lon=" + pos.coords.longitude;
                 data.fetchFromAPI("weather");
                 data.fetchFromAPI("forecast");
+            },
+            (err) => {
+                alert(err.message + "\nPlease enter your city name manually.");
             });
         }
         else {
-            console.log("Geolocation is not supported by your browser. Please enter your city name manually.");
+            alert("Geolocation is not supported by your browser. Please enter your city name manually.");
             return;
         }
     },
     fetchFromAPI: (type) => {
-        console.log(cityName);
         let locationURL = coords ? coords : "q=" + cityName.value;
     
         fetch("https://api.openweathermap.org/data/2.5/" + type + "?" + locationURL + "&units=metric&APPID=f20349ac0af5ebfbc2586d5a8ae52834")
@@ -176,11 +178,7 @@ let view = {
     },
     setBackgroundImage: () => {
         let weather = weatherData.weather[0].main;
-        let description = weatherData.weather[0].description;
         let image = document.querySelector(".bg-image");
-
-        console.log("main: " + weather);   //outputs weather main description
-        console.log("description: " + description);   //outputs weather description
 
         switch(weather) {
             case "Clouds":
