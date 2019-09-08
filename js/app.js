@@ -3,8 +3,6 @@
   * make sure background image works in all cases
   * add more background images, add night versions
   * line up columns in forecast row
-  * put geolocation and fetch functions inside data object
-  * put format functions inside format object
   */
 
 let weatherData = null;     //contains all weather data pulled from OpenWeather API
@@ -13,106 +11,108 @@ let coords = null;          //contains latitude and longitude values from getLoc
 let cityName = null;        //contains city name value when user enters city name
 let date = new Date();
 
-//uses the browsers geolocation method to get users coordinates
-let getLocation = () => {
-    if(navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((pos) => {
-            coords = "lat=" + pos.coords.latitude + "&lon=" + pos.coords.longitude;
-            fetchFromAPI("weather");
-            fetchFromAPI("forecast");
-        });
-    }
-    else {
-        console.log("Geolocation is not supported by your browser. Please enter your city name manually.");
-        return;
-    }
-}
-
-//type can be either weather or forecast, weather returns current weather info, forecast returns 5 day/3 hour forecast
-let fetchFromAPI = (type) => {
-    let locationURL = coords ? coords : "q=" + cityName.value;
-
-    fetch("https://api.openweathermap.org/data/2.5/" + type + "?" + locationURL + "&units=metric&APPID=f20349ac0af5ebfbc2586d5a8ae52834")
-        .then(
-            (res) => {
-                if(res.status == 200) {
-                    console.log("Status is " + res.status + " for " + type);
-                    res.json().then((data) => {
-                        //Once data is assigned to weatherData, display content to DOM
-                        if(type == "weather") {
-                            weatherData = data;
-                            view.displayCurrentDate();
-                            view.displayCurrentDay();
-                            view.displayCurrentWeather();
-                            view.displayCityName();
-                            view.setBackgroundImage();
-                        }
-                        else if(type == "forecast") {
-                            forecastData = data;
-                            view.displayThreeHourForecast();
-                        }
-                        else {
-                            console.log("type in fetchFromAPI() was not weather or forecast");
-                        }
-                    });
-                }
-                else {
-                    console.log("Error. Status is " + res.status);
-                }
-            }
-        )
-        .catch((err) => {
-            console.log("Fetch Error: " + err);
-        });
-}
-
-let formatDate = (dt_text) => {
-    if(dt_text == "current") {
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
+//Gets geolocation data from user if able too, fetches data from API
+let data = {
+    getLocation: () => {
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((pos) => {
+                coords = "lat=" + pos.coords.latitude + "&lon=" + pos.coords.longitude;
+                data.fetchFromAPI("weather");
+                data.fetchFromAPI("forecast");
+            });
+        }
+        else {
+            console.log("Geolocation is not supported by your browser. Please enter your city name manually.");
+            return;
+        }
+    },
+    fetchFromAPI: (type) => {
+        let locationURL = coords ? coords : "q=" + cityName.value;
     
-        return day + "/" + month + "/" + year;
+        fetch("https://api.openweathermap.org/data/2.5/" + type + "?" + locationURL + "&units=metric&APPID=f20349ac0af5ebfbc2586d5a8ae52834")
+            .then(
+                (res) => {
+                    if(res.status == 200) {
+                        console.log("Status is " + res.status + " for " + type);
+                        res.json().then((data) => {
+                            //Once data is assigned to weatherData, display content to DOM
+                            if(type == "weather") {
+                                weatherData = data;
+                                view.displayCurrentDate();
+                                view.displayCurrentDay();
+                                view.displayCurrentWeather();
+                                view.displayCityName();
+                                view.setBackgroundImage();
+                            }
+                            else if(type == "forecast") {
+                                forecastData = data;
+                                view.displayThreeHourForecast();
+                            }
+                            else {
+                                console.log("type in fetchFromAPI() was not weather or forecast");
+                            }
+                        });
+                    }
+                    else {
+                        console.log("Error. Status is " + res.status);
+                    }
+                }
+            )
+            .catch((err) => {
+                console.log("Fetch Error: " + err);
+            });
     }
-    else if(dt_text.length == 19) {
+}
+
+//handles formatting of date, time and day of week
+let arrange = {
+    formatDate: (dt_text) => {
+        if(dt_text == "current") {
+            let day = date.getDate();
+            let month = date.getMonth() + 1;
+            let year = date.getFullYear();
+        
+            return day + "/" + month + "/" + year;
+        }
+        else if(dt_text.length == 19) {
+            let dtSubstring = dt_text.substring(0, 10);
+            let forecastDate = new Date(dtSubstring);
+    
+            let day = forecastDate.getDate();
+            let month = forecastDate.getMonth() + 1;
+            let year = forecastDate.getFullYear();
+    
+            return day + "/" + month + "/" + year;
+        }
+        else {
+            console.log("Error in formatDate()");
+        }
+    
+    },
+    formatTime: (dt_text) => {
+        let minutes = dt_text.substring(13, 16);
+        let hours = parseInt(dt_text.substring(11, 13));
+        let meridiem = "am";
+    
+        if(hours == 00) {
+            hours = 12;
+        }
+        else if(hours > 12) {
+            hours = hours - 12;
+            meridiem = "pm";
+        }
+        return hours + minutes + meridiem;
+    },
+    formatDay: (dt_text) => {
         let dtSubstring = dt_text.substring(0, 10);
         let forecastDate = new Date(dtSubstring);
-
-        let day = forecastDate.getDate();
-        let month = forecastDate.getMonth() + 1;
-        let year = forecastDate.getFullYear();
-
-        return day + "/" + month + "/" + year;
+        let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+        let dayName = days[forecastDate.getDay()];
+        return dayName;
     }
-    else {
-        console.log("Error in formatDate()");
-    }
-
 }
 
-let formatTime = (dt_text) => {
-    let minutes = dt_text.substring(13, 16);
-    let hours = parseInt(dt_text.substring(11, 13));
-    let meridiem = "am";
-
-    if(hours == 00) {
-        hours = 12;
-    }
-    else if(hours > 12) {
-        hours = hours - 12;
-        meridiem = "pm";
-    }
-    return hours + minutes + meridiem;
-}
-
-let formatDay = (dt_text) => {
-    let dtSubstring = dt_text.substring(0, 10);
-    let forecastDate = new Date(dtSubstring);
-    let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    let dayName = days[forecastDate.getDay()];
-    return dayName;
-}
-
+//handles outputting to DOM and CSS modifications
 let view = {
     degrees: "<sup>&deg;C</sup>",
     tempHighArrow: "<i class='fas fa-long-arrow-alt-up'></i>",
@@ -144,7 +144,7 @@ let view = {
     displayCurrentDate: () => {
         let currentDateOutput = document.getElementById("current-date");
 
-        currentDateOutput.innerHTML = formatDate("current");
+        currentDateOutput.innerHTML = arrange.formatDate("current");
     },
     displayThreeHourForecast: () => {
         let forecastDataOutputList = document.querySelectorAll("div.three-hour-forecast > div.row");
@@ -160,9 +160,9 @@ let view = {
             forecastDataOutputList[i].innerHTML =   
            `<div class='forecast-info-container'>
                 <div class='forecast-date'>
-                    ${ formatDay(forecastDate) }
-                    ${ formatDate(forecastDate) } 
-                    ${ formatTime(forecastDate) }
+                    ${ arrange.formatDay(forecastDate) }
+                    ${ arrange.formatDate(forecastDate) } 
+                    ${ arrange.formatTime(forecastDate) }
                 </div>
                 <div class='forecast-description'> ${ description } </div>
             </div>
@@ -215,4 +215,4 @@ let view = {
     }
 }
 
-window.addEventListener("load", getLocation);
+window.addEventListener("load", data.getLocation);
