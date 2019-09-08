@@ -1,15 +1,8 @@
- /**
-  * Get city name input working
-  * make sure background image works in all cases
-  * add more background images, add night versions
-  * line up columns in forecast row
-  */
-
-let weatherData = null;     //contains all weather data pulled from OpenWeather API
-let forecastData = null;    //contains all forecast data pulled from OpenWeather API
-let coords = null;          //contains latitude and longitude values from getLocation()
-let cityName = null;        //contains city name value when user enters city name
+let weatherData = null;                                     //contains all weather data pulled from OpenWeather API
+let forecastData = null;                                    //contains all forecast data pulled from OpenWeather API
+let coords = null;                                          //contains latitude and longitude values from getLocation()
 let date = new Date();
+let cityName = document.getElementById("city-name-input");  //input containing city name
 
 //Gets geolocation data from user if able too, fetches data from API
 let data = {
@@ -27,6 +20,7 @@ let data = {
         }
     },
     fetchFromAPI: (type) => {
+        console.log(cityName);
         let locationURL = coords ? coords : "q=" + cityName.value;
     
         fetch("https://api.openweathermap.org/data/2.5/" + type + "?" + locationURL + "&units=metric&APPID=f20349ac0af5ebfbc2586d5a8ae52834")
@@ -49,7 +43,7 @@ let data = {
                                 view.displayThreeHourForecast();
                             }
                             else {
-                                console.log("type in fetchFromAPI() was not weather or forecast");
+                                console.log("type parameter in fetchFromAPI() was not weather or forecast");
                             }
                         });
                     }
@@ -61,6 +55,11 @@ let data = {
             .catch((err) => {
                 console.log("Fetch Error: " + err);
             });
+    },
+    weatherByCityName: () => {
+        coords = null;
+        data.fetchFromAPI("weather");
+        data.fetchFromAPI("forecast");
     }
 }
 
@@ -216,3 +215,9 @@ let view = {
 }
 
 window.addEventListener("load", data.getLocation);
+cityName.addEventListener("keypress", (e) => {
+    let key = e.which || e.keyCode;
+    if(key === 13) {
+        data.weatherByCityName();
+    }
+});

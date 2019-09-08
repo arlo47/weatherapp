@@ -3,6 +3,9 @@ body {
     padding: 0;
 }
 
+i.fa-long-arrow-alt-down, i.fa-long-arrow-alt-up {
+    margin-right: 3px;
+}
 
 /* TOP BAR */
 #top-bar {
@@ -386,7 +389,8 @@ p, span, a, li, div, i {
     }
 
     .forecast-date {
-        flex: 2;
+        flex: 0 0 200px;
+        font-size: 18px;
     }
 
     .forecast-description {
@@ -394,35 +398,36 @@ p, span, a, li, div, i {
     }
 
     .forecast-main-temp {
-        justify-content: flex-end;
-        flex: 1;
-        align-self: center;
+        align-self: flex-end;
     }
 
     .three-hour-forecast .temp-container {
         font-size: 21px;
+        flex: 0 0 270px;
+        justify-content: flex-end;
+        text-align: right;
     }
 
     .max-min-container {
         flex-direction: row;
+        flex: 0 0 178px;
+        justify-content: flex-end;
     }
 
     .forecast-max-temp {
         justify-content: flex-end;
         margin-right: 5px;
+        flex: 0 0 85px;
     }
 
     .forecast-min-temp {
         justify-content: flex-end;
+        flex: 0 0 85px;
     }
 
     .three-hour-forecast i.owi {
         font-size: 36px;
         margin-right: 5px;
-    }
-
-    .forecast-date {
-        font-size: 18px;
     }
     
     .forecast-description {
