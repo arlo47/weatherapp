@@ -115,14 +115,17 @@ let arrange = {
 
 //handles outputting to DOM and CSS modifications
 let view = {
-    degrees: "<sup>&deg;C</sup>",
-    tempHighArrow: "<i class='fas fa-long-arrow-alt-up'></i>",
-    tempLowArrow: "<i class='fas fa-long-arrow-alt-down'></i>",
+    degrees: "<sup>&deg;C</sup>",                                   //degrees symbol in superscript
+    tempHighArrow: "<i class='fas fa-long-arrow-alt-up'></i>",      //used as icon next to temperature low
+    tempLowArrow: "<i class='fas fa-long-arrow-alt-down'></i>",     //used as icon next to temperature high
+
+    //outputs city name to DOM
     displayCityName: () => {
         let cityNameOutput = document.getElementById("city-name");
-
         cityNameOutput.innerHTML = weatherData.name;
     },
+
+    //outputs current weather to DOM
     displayCurrentWeather: () => {
         let currentTempOutput = document.getElementById("current-temp");
         let currentHighTempOutput = document.getElementById("current-high-temp");
@@ -135,6 +138,8 @@ let view = {
         currentWeatherIconOutput.innerHTML = view.displayIcon(weatherData.weather[0].icon) + 
                                             `<span>${ weatherData.weather[0].main }</span>`;
     },
+
+    //outputs current day to DOM
     displayCurrentDay: () => {
         let currentDayOutput = document.getElementById("current-day");
         let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -142,14 +147,19 @@ let view = {
                 
         currentDayOutput.innerHTML = dayName;
     },
+
+    //outputs current date to DOM
     displayCurrentDate: () => {
         let currentDateOutput = document.getElementById("current-date");
 
         currentDateOutput.innerHTML = arrange.formatDate("current");
     },
+
+    //outputs the forecast every 3 hours, for 18 hours to the DOM
     displayThreeHourForecast: () => {
         let forecastDataOutputList = document.querySelectorAll("div.three-hour-forecast > div.row");
 
+        //loops over each div.row in node list and outputs forecast data to each div.row
         for(let i = 0; i < forecastDataOutputList.length; i++) {
             let forecastDate = forecastData.list[i].dt_txt;
             let mainTemp = forecastData.list[i].main.temp + view.degrees;
@@ -159,23 +169,25 @@ let view = {
                                <span> ${ forecastData.list[i].weather[0].description } </span>`;
 
             forecastDataOutputList[i].innerHTML =   
-           `<div class='forecast-info-container'>
-                <div class='forecast-date'>
-                    ${ arrange.formatDay(forecastDate) }
-                    ${ arrange.formatDate(forecastDate) } 
-                    ${ arrange.formatTime(forecastDate) }
-                </div>
-                <div class='forecast-description'> ${ description } </div>
-            </div>
-            <div class='temp-container'>
-                <div class='forecast-main-temp'> ${ mainTemp } </div>
-                <div class='max-min-container'>
-                    <div class='forecast-max-temp'> ${ maxTemp } </div>
-                    <div class='forecast-min-temp'> ${ minTemp } </div>
-                </div>
-            </div>`;
+                                                       `<div class='forecast-info-container'>
+                                                            <div class='forecast-date'>
+                                                                ${ arrange.formatDay(forecastDate) }
+                                                                ${ arrange.formatDate(forecastDate) } 
+                                                                ${ arrange.formatTime(forecastDate) }
+                                                            </div>
+                                                            <div class='forecast-description'> ${ description } </div>
+                                                        </div>
+                                                        <div class='temp-container'>
+                                                            <div class='forecast-main-temp'> ${ mainTemp } </div>
+                                                            <div class='max-min-container'>
+                                                                <div class='forecast-max-temp'> ${ maxTemp } </div>
+                                                                <div class='forecast-min-temp'> ${ minTemp } </div>
+                                                            </div>
+                                                        </div>`;
         }
     },
+    
+    //checks the weather description inside weatherData and displays a different background image based on this.
     setBackgroundImage: () => {
         let weather = weatherData.weather[0].main;
         let image = document.querySelector(".bg-image");
@@ -207,12 +219,18 @@ let view = {
                 break;
         }
     },
+
+    //iconCode is a code in weatherData that represents an OpenWeatherIcon code (iwo). 
+    //This displays the next to "scattered clouds", overcast, clear sky etc
     displayIcon: (iconCode) => {
         return `<i class='owi owi-${ iconCode }'></i>`;
     }
 }
 
+//Attempts to get geolocation from browser
 window.addEventListener("load", data.getLocation);
+
+//if unsuccessful user can enter city name in searchbar
 cityName.addEventListener("keypress", (e) => {
     let key = e.which || e.keyCode;
     if(key === 13) {
